@@ -19,12 +19,23 @@ Gem::Specification.new do |s|
     "README.rdoc"
   ]
   s.files = [
+    "Gemfile",
+    "Gemfile.lock",
+    "LICENSE.txt",
+    "README.rdoc",
+    "Rakefile",
     "VERSION",
-    "lib/redis_ui.rb",
+    "bin/redis-ui",
+    "config.ru",
+    "lib/redis-ui.rb",
     "lib/static/stylesheets/redis-ui.css",
     "lib/views/index.erb",
     "lib/views/layout.erb",
-    "lib/views/show.erb"
+    "lib/views/show.erb",
+    "pkg/redis-ui-0.1.0.gem",
+    "redis-ui.gemspec",
+    "test/helper.rb",
+    "test/test_redis_ui.rb"
   ]
   s.homepage = %q{http://github.com/jwelshiv/redis-ui}
   s.licenses = ["MIT"]
@@ -33,7 +44,7 @@ Gem::Specification.new do |s|
   s.summary = %q{Sinatra backed redis ui}
   s.test_files = [
     "test/helper.rb",
-    "test/test_rediseer.rb"
+    "test/test_redis_ui.rb"
   ]
 
   if s.respond_to? :specification_version then
