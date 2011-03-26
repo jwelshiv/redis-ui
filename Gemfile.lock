@@ -1,0 +1,25 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    git (1.2.5)
+    jeweler (1.5.2)
+      bundler (~> 1.0.0)
+      git (>= 1.2.5)
+      rake
+    rack (1.2.2)
+    rake (0.8.7)
+    rcov (0.9.9)
+    redis (2.1.1)
+    sinatra (1.2.0)
+      rack (~> 1.1)
+      tilt (>= 1.2.2, < 2.0)
+    tilt (1.2.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  jeweler
+  rcov
+  redis
+  sinatra
