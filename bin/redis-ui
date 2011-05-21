@@ -1,5 +1,18 @@
 #!/usr/bin/env ruby
-#$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+begin
+	require 'vegas'
+rescue LoadError
+	require 'rubygems'
+	require 'vegas'
+end
+
 require 'redis-ui'
 
-RedisUI::Server.run!
+Vegas::Runner.new(RedisUI::Server, 'redis-ui') do |runner, opts, app|
+  opts.on('-N NAMESPACE', "--namespace NAMESPACE", "set the Redis namespace") {|namespace|
+    runner.logger.info "Using Redis namespace '#{namespace}'"
+    Resque.redis.namespace = namespace
+  }
+end
+ 
