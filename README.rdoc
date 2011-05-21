@@ -2,6 +2,8 @@
 
 web accessible panel to view/manage redisdb
 
+requires ruby 1.8.7
+
 == Copyright
 
 Copyright (c) 2011 jwelshiv. See LICENSE.txt for
