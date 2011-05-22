@@ -15,8 +15,11 @@
 	<script src="/js/app/models.js"></script>
 	
 	<script type="text/javascript">
-	 	RUI.view.app = new RUI.view.main({el : '#main'})
-		RUI.data.keys.fetch();
+	 	RUI.view.app = new RUI.view.main({collection : RUI.data.keys})
+		
+		setInterval(function() {
+		  RUI.data.keys.fetch();
+		}, 1000);
 	</script>
 </body>
 </html>
