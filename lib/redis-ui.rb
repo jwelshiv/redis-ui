@@ -74,13 +74,13 @@ module RedisUI
           []
         end
         
-        {:id => key, :type => RedisUI.redis.type(key), :data => data}
+        {:key => key, :type => RedisUI.redis.type(key), :data => data}
       end
       
     end
     
     get "/" do
-      @keys = RedisUI.redis.keys
+      @keys = RedisUI.redis.keys.collect{ |key| get_key(key) }
       erb :index
     end
     

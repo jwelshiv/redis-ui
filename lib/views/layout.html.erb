@@ -4,9 +4,11 @@
 	<link rel="stylesheet" href="/stylesheets/redis-ui.css" type="text/css" media="screen" charset="utf-8">
 </head>
 <body>
-	<h1>RedisUI</h1>
-	<div id="main"></div>
+	<div id="container">
+		<h1>RedisUI</h1>
+		<div id="main"></div>
 	<%= yield %>
+	</div>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.js"></script>
 	<script src="/js/lib/underscore.js"></script>
 	<script src="/js/lib/backbone.js"></script>
@@ -15,11 +17,14 @@
 	<script src="/js/app/models.js"></script>
 	
 	<script type="text/javascript">
-	 	RUI.view.app = new RUI.view.main({collection : RUI.data.keys})
+	 	//RUI.view.app = new RUI.view.main({collection : RUI.data.keys})
+		//RUI.data.keys.fetch();
 		
+		/*
 		setInterval(function() {
 		  RUI.data.keys.fetch();
 		}, 1000);
+		*/
 	</script>
 </body>
 </html>

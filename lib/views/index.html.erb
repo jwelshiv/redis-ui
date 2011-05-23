@@ -1,0 +1,18 @@
+<table class="keys">
+	<tr>
+		<th>Key</th>
+		<th>Type</th>
+	</tr>
+	<tbody>
+		<% @keys.each do |key| %>
+		<tr class="key">
+			<td>
+				<a href="/keys/<%= key[:key] %>">
+					<%= key[:key] %>
+				</a>
+			</td>
+			<td><%= key[:type] %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
