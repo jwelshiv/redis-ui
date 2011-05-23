@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{redis-ui}
-  s.version = "0.1.0"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["jwelshiv"]
-  s.date = %q{2011-03-26}
+  s.date = %q{2011-05-23}
   s.default_executable = %q{redis-ui}
   s.description = %q{RedisUI is a redis db web accessible viewer}
   s.email = %q{james@supermatter.com}
@@ -28,11 +28,17 @@ Gem::Specification.new do |s|
     "bin/redis-ui",
     "config.ru",
     "lib/redis-ui.rb",
+    "lib/static/js/.DS_Store",
+    "lib/static/js/app/app.js",
+    "lib/static/js/app/models.js",
+    "lib/static/js/lib/backbone.js",
+    "lib/static/js/lib/underscore.js",
     "lib/static/stylesheets/redis-ui.css",
-    "lib/views/index.erb",
-    "lib/views/layout.erb",
-    "lib/views/show.erb",
+    "lib/views/index.html.erb",
+    "lib/views/layout.html.erb",
+    "lib/views/show.html.erb",
     "pkg/redis-ui-0.1.0.gem",
+    "pkg/redis-ui-0.1.1.gem",
     "redis-ui.gemspec",
     "test/helper.rb",
     "test/test_redis_ui.rb"
