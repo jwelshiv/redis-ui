@@ -7,7 +7,7 @@ rescue LoadError
 	require 'vegas'
 end
 
-require 'lib/redis-ui'
+require 'redis-ui'
 
 Vegas::Runner.new(RedisUI::Server, 'redis-ui') do |runner, opts, app|
   opts.on('-N NAMESPACE', "--namespace NAMESPACE", "set the Redis namespace") {|namespace|
