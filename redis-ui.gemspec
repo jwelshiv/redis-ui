@@ -23,8 +23,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'bacon'
   
   s.add_runtime_dependency 'json'
-  s.add_runtime_dependency 'redis'
-  s.add_runtime_dependency 'redis-namespace'
+  s.add_runtime_dependency 'hiredis', '~> 0.3.1'
+  s.add_runtime_dependency 'redis-namespace', '~> 1.0.2'
   s.add_runtime_dependency 'sinatra'
   s.add_runtime_dependency 'sinatra-respond_to'
 end

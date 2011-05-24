@@ -1,11 +1,8 @@
-$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
+#!/usr/bin/env ruby
+require 'logger'
 
-begin
-	require 'json'
-rescue LoadError
-	require 'rubygems'
-	require 'json'
-end
-
+$LOAD_PATH.unshift ::File.expand_path(::File.dirname(__FILE__) + '/lib')
 require 'lib/redis-ui'
-run RedisUI::Server
+
+use Rack::ShowExceptions
+run RedisUI::Server.new

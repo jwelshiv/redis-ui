@@ -1,10 +1,10 @@
 PATH
   remote: .
   specs:
-    redis-ui (0.0.1)
+    redis-ui (0.1.1)
+      hiredis (~> 0.3.1)
       json
-      redis
-      redis-namespace
+      redis-namespace (~> 1.0.2)
       sinatra
       sinatra-respond_to
 
@@ -12,6 +12,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     bacon (1.1.0)
+    hiredis (0.3.2)
     json (1.5.1)
     rack (1.3.0)
     redis (2.2.0)
