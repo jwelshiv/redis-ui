@@ -9,10 +9,13 @@ end
 
 require 'redis-ui'
 
-Vegas::Runner.new(RedisUI::Server, 'redis-ui') do |runner, opts, app|
+Vegas::Runner.new(RedisUI::Server, 'redis-ui', {
+  :before_run => lambda {|v|
+    RedisUI.redis=v.args.first unless v.args.first.nil?
+  }
+}) do |runner, opts, app|
   opts.on('-N NAMESPACE', "--namespace NAMESPACE", "set the Redis namespace") {|namespace|
     runner.logger.info "Using Redis namespace '#{namespace}'"
     RedisUI.redis.namespace = namespace
   }
-end
- 
+end 

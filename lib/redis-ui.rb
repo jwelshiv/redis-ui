@@ -12,14 +12,38 @@ require 'sinatra/respond_to'
 require 'erb'
 
 module RedisUI
-    
-  # Returns the current Redis connection. If none has been created, will
-  # create a new one.
-  def self.redis
-    return @redis if @redis
-    @redis = Redis.new
-  end
+  extend self
   
+  # hostname:port
+  # redis://hostname:port
+  def redis=(server)    
+    case server
+    when String
+      if server =~ /redis\:\/\//
+        redis = Redis.connect(:url => server, :thread_safe => true)
+      else
+        server, namespace = server.split('/', 2)
+        host, port, db = server.split(':')
+        redis = Redis.new(:host => host, :port => port,
+          :thread_safe => true, :db => db)
+      end
+      namespace ||= ""
+      
+      @redis = Redis::Namespace.new(namespace, :redis => redis)
+    
+    when Redis::Namespace
+      @redis = server
+    else
+      @redis = Redis::Namespace.new(@namespace, :redis => server)
+    end
+  end
+
+  def redis
+    return @redis if @redis
+    self.redis = Redis.respond_to?(:connect) ? Redis.connect : "localhost:6379"
+    self.redis
+  end
+   
   
   class Server < Sinatra::Base
     register Sinatra::RespondTo
