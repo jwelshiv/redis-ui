@@ -42,7 +42,15 @@ table td {
     border-right: 1px solid #CCCCCC;
     margin: 0pt;
     padding: 0.5em 1em 0.5em 0.5em;
+    vertical-align: top;
 }
 
-ul{padding:0.5em; margin:1em;}
-li{padding:0.5em 0;}
+table ul {
+    list-style: none;
+}
+table li {
+    padding-bottom: 3px;
+}
+
+#container>ul{padding:0.5em; margin:1em;}
+#container>li{padding:0.5em 0;}

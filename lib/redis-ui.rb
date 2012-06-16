@@ -1,5 +1,6 @@
-require 'hiredis'
+require 'redis'
 require 'redis/namespace'
+require 'pp'
 
 begin
   require 'yajl'
@@ -51,37 +52,66 @@ module RedisUI
     set :sessions, true
     set :logging, true
     set :views, File.dirname(__FILE__) + '/views'
-    set :public, File.dirname(__FILE__) + '/static'
+    set :public_folder, File.dirname(__FILE__) + '/static'
       
     helpers do 
       include Rack::Utils
       alias_method :h, :escape_html
+
+      def redis
+        RedisUI.redis
+      end
       
       def get_key(key)
-        data = case RedisUI.redis.type(key)
-        when "string"
-          Array(RedisUI.redis[key])
-        when "list"
-          RedisUI.redis.lrange(key, 0, -1)
-        when "set"
-          RedisUI.redis.smembers(key)
+        data = case redis.type(key)
+               when "string"
+                 redis[key]
+               when "list"
+                 redis.lrange(key, 0, -1)
+               when "set"
+                 redis.smembers(key)
+               when 'zset'
+                 redis.zrange(key, 0, -1)
+               when 'hash'
+                 redis.hgetall(key)
+               else
+                 []
+               end
+
+        {:key => key, :type => redis.type(key), :data => data}
+      end
+
+      def show(val)
+        case val
+        when String
+          val
+        when Array
+          str = "<ul><li>"
+          str << val.join('</li><li>')
+          str << '</li></ul>'
+        when Hash
+          str = "<ul><li>"
+          arr = []
+          val.map do |k, v|
+            arr << "#{k} => #{v}"
+          end
+          str << arr.join('</li><li>')
+          str << '</li></ul>'
         else
-          []
+          val.to_s
         end
-        
-        {:key => key, :type => RedisUI.redis.type(key), :data => data}
       end
       
     end
     
     get "/" do
-      @keys = RedisUI.redis.keys.collect{ |key| get_key(key) }
+      @keys = RedisUI.redis.keys.map{ |key| get_key(key) }
       erb :index
     end
     
     get "/keys" do
       content_type :json
-      @keys = {:keys => RedisUI.redis.keys.collect{ |key| get_key(key) }}
+      @keys = {:keys => RedisUI.redis.keys.map{ |key| get_key(key) }}
       @keys.to_json
     end
 
