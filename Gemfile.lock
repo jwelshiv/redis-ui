@@ -1,29 +1,34 @@
 PATH
   remote: .
   specs:
-    redis-ui (0.1.1)
-      hiredis (~> 0.3.1)
+    redis-ui (0.1.3)
       json
-      redis-namespace (~> 1.0.2)
+      redis
+      redis-namespace
       sinatra
       sinatra-respond_to
+      vegas
 
 GEM
   remote: http://rubygems.org/
   specs:
     bacon (1.1.0)
-    hiredis (0.3.2)
-    json (1.5.1)
-    rack (1.3.0)
-    redis (2.2.0)
-    redis-namespace (1.0.3)
-      redis (< 3.0.0)
-    sinatra (1.2.6)
-      rack (~> 1.1)
-      tilt (>= 1.2.2, < 2.0)
-    sinatra-respond_to (0.7.0)
-      sinatra (~> 1.2)
-    tilt (1.3.1)
+    json (1.7.3)
+    rack (1.4.1)
+    rack-protection (1.2.0)
+      rack
+    redis (3.0.1)
+    redis-namespace (1.2.0)
+      redis (~> 3.0.0)
+    sinatra (1.3.2)
+      rack (~> 1.3, >= 1.3.6)
+      rack-protection (~> 1.2)
+      tilt (~> 1.3, >= 1.3.3)
+    sinatra-respond_to (0.8.0)
+      sinatra (~> 1.3)
+    tilt (1.3.3)
+    vegas (0.1.11)
+      rack (>= 1.0.0)
 
 PLATFORMS
   ruby
