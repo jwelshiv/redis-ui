@@ -1,5 +1,6 @@
 require 'redis'
 require 'redis/namespace'
+require 'deep_merge'
 require 'pp'
 
 begin
@@ -54,6 +55,10 @@ module RedisUI
     set :views, File.dirname(__FILE__) + '/views'
     set :public_folder, File.dirname(__FILE__) + '/static'
       
+    configure :development do
+      enable :logging
+    end
+
     helpers do 
       include Rack::Utils
       alias_method :h, :escape_html
@@ -101,11 +106,38 @@ module RedisUI
           val.to_s
         end
       end
+
+      def render_tree(val)
+          str = "<ul>"
+          val.each do |k, v|
+            str << "<li><a href='#'>#{k}</a>#{render_tree(v)}</li>"
+          end
+          str << '</ul>'
+      end
+
+      def build_namespace_tree
+        @namespace_tree = {}
+        namespaces = redis.keys.map{|k| k.split(':')[0..-2]}.uniq.sort_by(&:size)
+        namespaces.each do |array|
+          hash = array.reverse.inject({}) do |branch, string|
+            newtrunk = {}
+            newtrunk[string] = branch
+            newtrunk
+          end
+          @namespace_tree.deep_merge!(hash)
+        end
+      end
+      # {
+      #   'top' => {
+      #     'second' => {}
+      #   }
+      # }
       
     end
     
     get "/" do
       @keys = RedisUI.redis.keys.map{ |key| get_key(key) }
+      build_namespace_tree
       erb :index
     end
     

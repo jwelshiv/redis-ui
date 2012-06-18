@@ -54,3 +54,17 @@ table li {
 
 #container>ul{padding:0.5em; margin:1em;}
 #container>li{padding:0.5em 0;}
+
+#namespaces {
+    float: left;
+    width: 25%;
+}
+
+#namespace_tree ul {
+    padding-left: 10px;
+}
+
+#data_table {
+    float: right;
+    width: 75%;
+}
