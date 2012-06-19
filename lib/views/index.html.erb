@@ -1,12 +1,20 @@
-<div id="namespaces">
+<!--
+<div id="options" class="panel">
+  <h2>Options</h2>
+  <p><input id="auto-refresh" name="auto-refresh" type="checkbox" checked="checked" /> <label for="auto-refresh">Auto-Refresh?</label></p>
+</div>
+-->
+
+<div id="namespaces" class="panel">
   <h2>Namespaces</h2>
   <div id="namespace_tree">
     <%= render_tree(@namespace_tree) %>
   </div>
+  <div class="clear"></div>
 </div>
 
 
-<div id="data_table">
+<div id="data_table" class="panel">
   <table class="keys">
     <thead>
       <tr>
@@ -36,5 +44,6 @@
       <% end %>
     </tbody>
   </table>
+  <div class="clear"></div>
 </div>
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'redis'
 require 'redis/namespace'
 require 'deep_merge'
@@ -54,6 +55,7 @@ module RedisUI
     set :logging, true
     set :views, File.dirname(__FILE__) + '/views'
     set :public_folder, File.dirname(__FILE__) + '/static'
+    set :assume_xhr_is_js, false
       
     configure :development do
       enable :logging
@@ -80,7 +82,7 @@ module RedisUI
                when 'hash'
                  redis.hgetall(key)
                else
-                 []
+                 '???'
                end
 
         {:key => key, :type => redis.type(key), :data => data}
@@ -91,16 +93,20 @@ module RedisUI
         when String
           val
         when Array
-          str = "<ul><li>"
-          str << val.join('</li><li>')
-          str << '</li></ul>'
+          if val.empty?
+            '[]'
+          else
+            str = "<ul><li> · "
+            str << val.map{|v|show(v)}.join('</li><li> · ')
+            str << '</li></ul>'
+          end
         when Hash
-          str = "<ul><li>"
+          str = "<ul><li> · "
           arr = []
           val.map do |k, v|
-            arr << "#{k} => #{v}"
+            arr << "#{k} => #{show(v)}"
           end
-          str << arr.join('</li><li>')
+          str << arr.join("</li><li> · ")
           str << '</li></ul>'
         else
           val.to_s
@@ -152,8 +158,8 @@ module RedisUI
       @data = get_key(@key)
       
       respond_to do |wants|
-          wants.html { erb :show }      # => views/posts.html.haml, also sets content_type to text/html
-          wants.js { @data.to_json }
+         wants.html { erb :show }      # => views/posts.html.haml, also sets content_type to text/html
+         wants.js { @data.to_json }
       end
     end
 
