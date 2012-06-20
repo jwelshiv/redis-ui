@@ -7,7 +7,7 @@
 <div id="namespaces" class="panel">
   <h2>Namespaces</h2>
   <div id="namespace_tree">
-    <%= render_tree(@namespace_tree) %>
+    <%= partial :namespace_tree, tree: @namespace_tree, namespace: RedisUI.namespace %>
   </div>
   <div class="clear"></div>
 </div>

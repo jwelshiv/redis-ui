@@ -3,8 +3,14 @@ module RedisUIHelpers
   def redis
     RedisUI.redis
   end
+
+  def partial(template,locals=nil)
+    locals = (locals.is_a?(Hash)) ? locals : {template.to_sym => locals}
+    template = ('_' + template.to_s).to_sym
+    erb template, {layout: false}, locals
+  end
   
-  def get_key(key)
+  def get_key(key, redis=self.redis)
     data = case redis.type(key)
            when "string"
              redis[key]
@@ -56,9 +62,9 @@ module RedisUIHelpers
     str << '</ul>'
   end
 
-  def build_namespace_tree
+  def build_namespace_tree(keys)
     @namespace_tree = {}
-    namespaces = redis.keys.map{|k| k.split(':')[0..-2]}.uniq.sort_by(&:size)
+    namespaces = keys.map{|k| k.split(':')[0..-2]}.uniq.sort_by(&:size)
     namespaces.each do |array|
       hash = array.reverse.inject({}) do |branch, string|
         newtrunk = {}

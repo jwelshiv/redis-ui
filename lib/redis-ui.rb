@@ -19,7 +19,7 @@ require 'redis-ui/helpers'
 
 module RedisUI
   extend self
-  
+
   # hostname:port
   # redis://hostname:port
   def redis=(server)    
@@ -49,6 +49,10 @@ module RedisUI
     self.redis = Redis.respond_to?(:connect) ? Redis.connect : "localhost:6379"
     self.redis
   end
+
+  def namespace
+    @namespace
+  end
    
   
   class Server < Sinatra::Base
@@ -71,8 +75,16 @@ module RedisUI
     end
     
     get "/" do
-      @keys = RedisUI.redis.keys.map{ |key| get_key(key) }
-      build_namespace_tree
+      keys = RedisUI.redis.keys
+      build_namespace_tree(keys)
+      @keys = keys.map{ |key| get_key(key) }
+      erb :index
+    end
+
+    get "/namespace/:ns" do
+      ns = Redis::Namespace.new(params[:ns], :redis => redis)
+      @keys = ns.keys.map{|k| get_key(k, ns)}
+      build_namespace_tree(redis.keys)
       erb :index
     end
     
