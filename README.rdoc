@@ -1,5 +1,9 @@
 == RedisUI
 
+[WARNING] 
+RedisUI is not very smart (yet?) about memory management. It loads ALL of your keys and values into memory at the same time, and then messes around with them. I haven't tried it, but you may run into issues with very large production databases. At this point this is more intended for debugging/development work.
+[/WARNING]
+
 * web accessible panel to view/manage redisdb
 * requires ruby 1.8.7+ or ruby 1.9+
 
@@ -47,6 +51,7 @@
 * auto-refresh?
 * incr/decr buttons for number-strings?
 * in-place edit for strings?
+* free-form console for typing to redis directly?
 
 == Copyright
 
