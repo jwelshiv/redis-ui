@@ -38,19 +38,15 @@
 == Features
 
 * specify which redis server to connect to (or default to localhost at port 5678 or 5679)
+* Click on the namespace tree to filter the keys shown to that namespace (since v0.4.0)
 * specify a namespace (see redis-namespace gem) to show only keys in that namespace
 * view all keys in a paged, sortable, as-you-type-filterable table
 
-== urls
-
-* /keys (json)
-* /keys/:id (html or json)
-* /server (json)
-
 == Todo
 
-* auto-refresh
-* make clicking on the namespace tree filter by namespace
+* auto-refresh?
+* incr/decr buttons for number-strings?
+* in-place edit for strings?
 
 == Copyright
 
