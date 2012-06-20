@@ -1,9 +1,8 @@
-<!--
 <div id="options" class="panel">
   <h2>Options</h2>
-  <p><input id="auto-refresh" name="auto-refresh" type="checkbox" checked="checked" /> <label for="auto-refresh">Auto-Refresh?</label></p>
+  <!-- <p><input id="auto-refresh" name="auto-refresh" type="checkbox" checked="checked" /> <label for="auto-refresh">Auto-Refresh?</label></p> -->
+  <p><input class="pref-cb" id="warn-on-del" name="warn-on-del" type="checkbox" checked="checked" /> <label for="warn-on-del">Warn on Delete?</label></p>
 </div>
--->
 
 <div id="namespaces" class="panel">
   <h2>Namespaces</h2>
@@ -18,16 +17,20 @@
   <table class="keys">
     <thead>
       <tr>
+        <th class="del-column"></th>
         <th>Key</th>
         <th>Type</th>
         <th>Value</th>
       </tr>
     </thead>
     <tbody>
-      <% @keys.each do |key| %>
-        <tr class="key">
+      <% @keys.each_with_index do |key, i| %>
+        <tr class="key" id="key<%= i %>">
           <td>
-            <a href="/keys/<%= key[:key] %>">
+            <a class="del" href="/del/<%= CGI.escape key[:key] %>" data-key="<%= key[:key] %>">X</a>
+          </td>
+          <td>
+            <a href="/keys/<%= CGI.escape key[:key] %>">
               <%= key[:key] %>
             </a>
           </td>
