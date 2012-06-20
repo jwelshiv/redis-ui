@@ -46,7 +46,7 @@ table.dataTable {
     margin-bottom: 10px;
 }
 
-table td a{display:block; color:#333;}
+table td a{color:#333;}
 
 table th {
     text-align:left;

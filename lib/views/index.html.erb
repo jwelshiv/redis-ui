@@ -26,7 +26,7 @@
     <tbody>
       <% @keys.each_with_index do |key, i| %>
         <tr class="key" id="key<%= i %>">
-          <td>
+          <td style="width: 20px;">
             <a class="del" href="/del/<%= CGI.escape key[:key] %>" data-key="<%= key[:key] %>">X</a>
           </td>
           <td>
