@@ -1,22 +1,57 @@
 == RedisUI
 
+[WARNING] 
+RedisUI is not very smart (yet?) about memory management. It loads ALL of your keys and values into memory at the same time, and then messes around with them. I haven't tried it, but you may run into issues with very large production databases. At this point this is more intended for debugging/development work.
+[/WARNING]
+
 * web accessible panel to view/manage redisdb
 * requires ruby 1.8.7+ or ruby 1.9+
 
     $ gem install redis-ui
     $ redis-ui [redis://<ip:port>] [--namespace <redis-namespace>]
 
+
+* redis-ui runs with Vegas (see gem vegas) so also comes with all the command-line options that affords:
+
+    Vegas options:
+     -K, --kill               kill the running process and exit
+     -S, --status             display the current running PID and URL then quit
+     -s, --server SERVER      serve using SERVER (thin/mongrel/webrick)
+     -o, --host HOST          listen on HOST (default: 0.0.0.0)
+     -p, --port PORT          use PORT (default: 5678)
+     -x, --no-proxy           ignore env proxy settings (e.g. http_proxy)
+     -e, --env ENVIRONMENT    use ENVIRONMENT for defaults (default: development)
+     -F, --foreground         don't daemonize, run in the foreground
+     -L, --no-launch          don't launch the browser
+     -d, --debug              raise the log level to :debug (default: :info)
+         --app-dir APP_DIR    set the app dir where files are stored (default: ~/.vegas/redis_ui)/)
+     -P, --pid-file PID_FILE  set the path to the pid file (default: app_dir/redis_ui.pid)
+         --log-file LOG_FILE  set the path to the log file (default: app_dir/redis_ui.log)
+         --url-file URL_FILE  set the path to the URL file (default: app_dir/redis_ui.url)
+    
+    'redis-ui' options:
+     -N NAMESPACE,            set the Redis namespace
+         --namespace
+    
+    Common options:
+     -h, --help               Show this message
+         --version            Show version
+
+
+
 == Features
 
 * specify which redis server to connect to (or default to localhost at port 5678 or 5679)
+* Click on the namespace tree to filter the keys shown to that namespace (since v0.4.0)
 * specify a namespace (see redis-namespace gem) to show only keys in that namespace
 * view all keys in a paged, sortable, as-you-type-filterable table
 
-== urls
+== Todo
 
-* /keys (json)
-* /keys/:id (html or json)
-* /server (json)
+* auto-refresh?
+* incr/decr buttons for number-strings?
+* in-place edit for strings?
+* free-form console for typing to redis directly?
 
 == Copyright
 
