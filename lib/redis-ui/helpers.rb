@@ -9,6 +9,10 @@ module RedisUIHelpers
     template = ('_' + template.to_s).to_sym
     erb template, {layout: false}, locals
   end
+
+  def current_ns
+    @current_ns ||= ''
+  end
   
   def get_key(key, redis=self.redis)
     data = case redis.type(key)

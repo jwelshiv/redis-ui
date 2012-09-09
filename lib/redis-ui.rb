@@ -82,6 +82,7 @@ module RedisUI
     end
 
     get "/namespace/:ns" do
+      @current_ns = "#{params[:ns]}:"
       ns = Redis::Namespace.new(params[:ns], :redis => redis)
       @keys = ns.keys.map{|k| get_key(k, ns)}
       build_namespace_tree(redis.keys)
@@ -99,7 +100,7 @@ module RedisUI
       @data = get_key(@key)
       
       respond_to do |wants|
-         wants.html { erb :show }      # => views/posts.html.haml, also sets content_type to text/html
+         wants.html { erb :show }
          wants.js { @data.to_json }
       end
     end

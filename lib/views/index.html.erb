@@ -27,10 +27,10 @@
       <% @keys.each_with_index do |key, i| %>
         <tr class="key" id="key<%= i %>">
           <td style="width: 20px;">
-            <a class="del" href="/del/<%= CGI.escape key[:key] %>" data-key="<%= key[:key] %>">X</a>
+            <a class="del" href="/del/<%= CGI.escape "#{current_ns}#{key[:key]}" %>" data-key="<%= "#{current_ns}#{key[:key]}" %>">X</a>
           </td>
           <td>
-            <a href="/keys/<%= CGI.escape key[:key] %>">
+            <a href="/keys/<%= CGI.escape "#{current_ns}#{key[:key]}" %>">
               <%= key[:key] %>
             </a>
           </td>
