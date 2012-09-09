@@ -1,0 +1,9 @@
+<ul>
+  <% tree.each do |k, v| %>
+  <li>
+    <% param = namespace ? "#{namespace}:#{k}" : k %>
+    <a href="/namespace/<%= CGI.escape param %>"><%= k %></a>
+    <%= partial :namespace_tree, tree: v, namespace: param %>
+  </li>
+  <% end %>
+</ul>

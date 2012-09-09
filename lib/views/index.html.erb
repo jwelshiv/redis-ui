@@ -1,29 +1,52 @@
-<table class="keys">
-  <thead>
-    <tr>
-      <th>Key</th>
-      <th>Type</th>
-      <th>Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @keys.each do |key| %>
-      <tr class="key">
-        <td>
-          <a href="/keys/<%= key[:key] %>">
-            <%= key[:key] %>
-          </a>
-        </td>
+<div id="options" class="panel">
+  <h2>Options</h2>
+  <!-- <p><input id="auto-refresh" name="auto-refresh" type="checkbox" checked="checked" /> <label for="auto-refresh">Auto-Refresh?</label></p> -->
+  <p><input class="pref-cb" id="warn-on-del" name="warn-on-del" type="checkbox" checked="checked" /> <label for="warn-on-del">Warn on Delete?</label></p>
+</div>
 
-        <td>
-          <%= key[:type] %>
-        </td>
+<div id="namespaces" class="panel">
+  <h2>Namespaces</h2>
+  <div id="namespace_tree">
+    <%= partial :namespace_tree, tree: @namespace_tree, namespace: RedisUI.namespace %>
+  </div>
+  <div class="clear"></div>
+</div>
 
-        <td>
-          <%= show(key[:data]) %>
-        </td>
 
+<div id="data_table" class="panel">
+  <table class="keys">
+    <thead>
+      <tr>
+        <th class="del-column"></th>
+        <th>Key</th>
+        <th>Type</th>
+        <th>Value</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @keys.each_with_index do |key, i| %>
+        <tr class="key" id="key<%= i %>">
+          <td style="width: 20px;">
+            <a class="del" href="/del/<%= CGI.escape "#{current_ns}#{key[:key]}" %>" data-key="<%= "#{current_ns}#{key[:key]}" %>">X</a>
+          </td>
+          <td>
+            <a href="/keys/<%= CGI.escape "#{current_ns}#{key[:key]}" %>">
+              <%= key[:key] %>
+            </a>
+          </td>
+
+          <td>
+            <%= key[:type] %>
+          </td>
+
+          <td>
+            <%= show(key[:data]) %>
+          </td>
+
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="clear"></div>
+</div>
+

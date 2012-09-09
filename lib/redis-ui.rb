@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
 require 'redis'
 require 'redis/namespace'
+require 'deep_merge'
 require 'pp'
+require 'cgi'
 
 begin
   require 'yajl'
@@ -12,9 +15,11 @@ require 'sinatra/base'
 require 'sinatra/respond_to'
 require 'erb'
 
+require 'redis-ui/helpers'
+
 module RedisUI
   extend self
-  
+
   # hostname:port
   # redis://hostname:port
   def redis=(server)    
@@ -44,6 +49,10 @@ module RedisUI
     self.redis = Redis.respond_to?(:connect) ? Redis.connect : "localhost:6379"
     self.redis
   end
+
+  def namespace
+    @namespace
+  end
    
   
   class Server < Sinatra::Base
@@ -53,59 +62,30 @@ module RedisUI
     set :logging, true
     set :views, File.dirname(__FILE__) + '/views'
     set :public_folder, File.dirname(__FILE__) + '/static'
+    set :assume_xhr_is_js, false
       
+    configure :development do
+      enable :logging
+    end
+
     helpers do 
       include Rack::Utils
       alias_method :h, :escape_html
-
-      def redis
-        RedisUI.redis
-      end
-      
-      def get_key(key)
-        data = case redis.type(key)
-               when "string"
-                 redis[key]
-               when "list"
-                 redis.lrange(key, 0, -1)
-               when "set"
-                 redis.smembers(key)
-               when 'zset'
-                 redis.zrange(key, 0, -1)
-               when 'hash'
-                 redis.hgetall(key)
-               else
-                 []
-               end
-
-        {:key => key, :type => redis.type(key), :data => data}
-      end
-
-      def show(val)
-        case val
-        when String
-          val
-        when Array
-          str = "<ul><li>"
-          str << val.join('</li><li>')
-          str << '</li></ul>'
-        when Hash
-          str = "<ul><li>"
-          arr = []
-          val.map do |k, v|
-            arr << "#{k} => #{v}"
-          end
-          str << arr.join('</li><li>')
-          str << '</li></ul>'
-        else
-          val.to_s
-        end
-      end
-      
+      include RedisUIHelpers
     end
     
     get "/" do
-      @keys = RedisUI.redis.keys.map{ |key| get_key(key) }
+      keys = RedisUI.redis.keys
+      build_namespace_tree(keys)
+      @keys = keys.map{ |key| get_key(key) }
+      erb :index
+    end
+
+    get "/namespace/:ns" do
+      @current_ns = "#{params[:ns]}:"
+      ns = Redis::Namespace.new(params[:ns], :redis => redis)
+      @keys = ns.keys.map{|k| get_key(k, ns)}
+      build_namespace_tree(redis.keys)
       erb :index
     end
     
@@ -120,8 +100,17 @@ module RedisUI
       @data = get_key(@key)
       
       respond_to do |wants|
-          wants.html { erb :show }      # => views/posts.html.haml, also sets content_type to text/html
-          wants.js { @data.to_json }
+         wants.html { erb :show }
+         wants.js { @data.to_json }
+      end
+    end
+
+    post "/del/:key" do
+      result = redis.del(params[:key])
+      if result == 1
+        true
+      else
+        500
       end
     end
 

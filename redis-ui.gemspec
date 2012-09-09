@@ -28,4 +28,5 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'sinatra'
   s.add_runtime_dependency 'sinatra-respond_to'
   s.add_runtime_dependency 'vegas'
+  s.add_runtime_dependency 'deep_merge'
 end
